@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "759088940888",
+    "firebase_url": "https://bikebuddy-3d1f1-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "bikebuddy-3d1f1",
+    "storage_bucket": "bikebuddy-3d1f1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:759088940888:android:dbfcaf6ac4f273872c872d",
+        "android_client_info": {
+          "package_name": "com.example.bike"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAifgEdXCjiCBGueSUEELvRcum5KBXzvMc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

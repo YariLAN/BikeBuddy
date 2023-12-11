@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                   xmlns:tools="http://schemas.android.com/tools"
+                                                   android:layout_width="match_parent"
+                                                   android:layout_height="match_parent"
+                                                   android:noHistory="true"
+                                                   tools:context=".ui.ProfileFragment"
+                                                   tools:layout_editor_absoluteY="0dp"
+                                                   tools:layout_editor_absoluteX="15dp">
+
+    <ImageButton
+            android:id="@+id/btn_logOut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_logout_24"
+            android:backgroundTint="@android:color/transparent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/image_profile"
+            app:layout_constraintHorizontal_bias="0.955"
+            app:layout_constraintVertical_bias="0.513" android:minHeight="48dp"/>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:id="@+id/image_profile"
+            android:backgroundTint="@android:color/transparent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="parent"
+            app:layout_constraintBaseline_toTopOf="parent"
+            android:src="@drawable/iconamoon_profile"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintVertical_bias="0.197"
+            app:layout_constraintEnd_toStartOf="@+id/textView5" app:layout_constraintHorizontal_bias="1.0"
+            android:layout_marginEnd="24dp"/>
+
+
+    <TextView
+            android:backgroundTint="@android:color/transparent"
+            android:textColor="@color/white"
+            android:hint="UserName"
+            android:layout_width="167dp"
+            android:layout_height="30dp" android:id="@+id/username_tv"
+            app:layout_constraintStart_toStartOf="@+id/image_profile" app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" android:layout_marginEnd="32dp"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintHorizontal_bias="0.924"
+            app:layout_constraintVertical_bias="0.178" android:background="#8FF4E0"/>
+    <TextView
+            android:backgroundTint="@android:color/transparent"
+            android:textColor="@color/white"
+            android:hint="Email"
+            android:layout_width="184dp"
+            android:layout_height="31dp" android:id="@+id/textView4"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintHorizontal_bias="0.928"
+            app:layout_constraintVertical_bias="0.334" android:background="#8FF4E0"/>
+    <TextView
+            android:backgroundTint="@android:color/transparent"
+            android:textColor="@color/white"
+            android:hint="SecondName"
+            android:layout_width="167dp"
+            android:layout_height="30dp" android:id="@+id/textView5"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" android:layout_marginEnd="32dp"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintHorizontal_bias="0.924"
+            app:layout_constraintVertical_bias="0.252" android:background="#8FF4E0"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

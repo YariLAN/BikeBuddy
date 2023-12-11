@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             xmlns:map="http://schemas.android.com/apk/res-auto"
+             tools:context=".ui.LocationFragment"
+             android:layout_height="match_parent">
+
+    <fragment
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            map:uiRotateGestures="true"
+            map:mapType="terrain"
+            android:id="@+id/google_map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            tools:layout="@layout/fragment_map"/>
+
+    <Button
+            android:text="Start"
+            android:textSize="23dp"
+            android:id="@+id/start_loc"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            map:layout_constraintEnd_toEndOf="parent"
+            map:layout_constraintStart_toStartOf="parent"
+            map:layout_constraintBottom_toBottomOf="parent"/>
+
+    <Button
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:text="Stop"
+            android:textSize="23dp"
+            android:id="@+id/stop_loc"
+            tools:layout_editor_absoluteY="651dp"
+            tools:layout_editor_absoluteX="0dp"
+            map:layout_constraintEnd_toEndOf="parent"
+            map:layout_constraintStart_toStartOf="parent"
+            map:layout_constraintBottom_toBottomOf="parent"
+            android:visibility="invisible"/>
+
+    <TextView
+            android:layout_width="match_parent"
+            android:textAlignment="center"
+            android:textSize="16dp"
+            android:layout_height="40dp"
+            android:id="@+id/location_info"
+            android:visibility="invisible"
+            map:layout_constraintStart_toStartOf="parent"
+            map:layout_constraintEnd_toEndOf="parent"
+            map:layout_constraintTop_toTopOf="@+id/google_map"
+            android:layout_marginTop="16dp"
+            map:layout_constraintHorizontal_bias="0.498"
+            />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
