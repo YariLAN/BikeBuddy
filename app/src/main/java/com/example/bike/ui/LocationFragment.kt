@@ -169,6 +169,7 @@ class LocationFragment: Fragment(), OnMapReadyCallback {
         }
     }
 
+    // Отслеживание метки местоположения
     private fun startLocationTracking() {
         val locationRequest = LocationRequest().apply {
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
@@ -176,9 +177,7 @@ class LocationFragment: Fragment(), OnMapReadyCallback {
             smallestDisplacement = 10.0F
         }
 
-        DistanceTracker.totalDistance = 0L
-        startLocation = null
-        lastLocation = null
+        // инициализируем время начало отслеживания
         startDateTime = LocalDateTime.now()
 
         locationCallback = object: LocationCallback() {
@@ -195,7 +194,7 @@ class LocationFragment: Fragment(), OnMapReadyCallback {
                         val distanceInMeters = its_last.distanceTo(lastLocation!!)
                         DistanceTracker.totalDistance += distanceInMeters.toLong()
 
-                        var msg = "Completed: ${DistanceTracker.totalDistance} meters"
+                        val msg = "Completed: ${DistanceTracker.totalDistance} meters"
 
                         if(BuildConfig.DEBUG){
                             Log.d("TRACKER", "$msg, (added $distanceInMeters)")
@@ -204,7 +203,6 @@ class LocationFragment: Fragment(), OnMapReadyCallback {
                     }
                     lastLocation = it.lastLocation
                 }
-
                 super.onLocationResult(loc)
             }
         }
@@ -216,29 +214,38 @@ class LocationFragment: Fragment(), OnMapReadyCallback {
         }
     }
 
+    // запись данных о пройденном маршруте в базу
     private fun postRouteCommand() {
         val route: Route = Route(
-            UUID.randomUUID().toString(),
-            FirebaseAuth.getInstance().currentUser!!.uid,
-            startDateTime.toString(),
-            LocalDateTime.now().toString(),
             DistanceTracker.totalDistance.toString(),
+            LocalDateTime.now().toString(),
+            UUID.randomUUID().toString(),
+            lastLocation!!.latitude.toString(),
+            lastLocation!!.longitude.toString(),
             startLocation!!.latitude.toString(),
             startLocation!!.longitude.toString(),
-            lastLocation!!.latitude.toString(),
-            lastLocation!!.longitude.toString()
+            startDateTime.toString(),
+            FirebaseAuth.getInstance().currentUser!!.uid,
         )
 
+        // Вызов репозитория на добавление записи
         RouteRepository.addItem(route)
     }
 
+    // Остановить отслеживание
     private fun stopLocationTracking() {
         client.removeLocationUpdates(locationCallback)
 
-        val between: Period = Period.fieldDifference(startDateTime, LocalDateTime.now())
-
+        // Запись маршрута в базу
         postRouteCommand()
 
+        // Вывод сообщения на экран
         makeText(context, "Прошли ${DistanceTracker.totalDistance} метров", LENGTH_SHORT).show()
+
+        // Обнуление необходимых для отслеживания данных
+        locBinding.locationInfo.text = ""
+        DistanceTracker.totalDistance = 0L
+        startLocation = null
+        lastLocation = null
     }
 }

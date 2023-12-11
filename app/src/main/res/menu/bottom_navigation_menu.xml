@@ -4,26 +4,26 @@
     <item
             android:id="@+id/bicycle_fr"
             android:title="Meeting"
-            android:icon="@drawable/bicycle_black"/>
+            android:icon="@drawable/bicycle_"/>
 
     <item
             android:id="@+id/search"
             android:title="Search"
-            android:icon="@drawable/tdesign_map_search"/>
+            android:icon="@drawable/tdesign_map"/>
 
     <item
         android:id="@+id/gps"
         android:title="Location"
-        android:icon="@drawable/tabler_location"/>
+        android:icon="@drawable/tabler_location_white"/>
 
     <item
         android:id="@+id/chats"
         android:title="Chats"
-        android:icon="@drawable/cil_chat_bubble"/>
+        android:icon="@drawable/cil_chat_bubble_white"/>
 
     <item
             android:id="@+id/profile"
             android:title="Profile"
-            android:icon="@drawable/iconamoon_profile"/>
+            android:icon="@drawable/ic_action_name"/>
 
 </menu>

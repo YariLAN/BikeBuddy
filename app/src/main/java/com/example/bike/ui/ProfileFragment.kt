@@ -6,15 +6,19 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import com.bumptech.glide.Glide
 import com.example.bike.R
 import com.example.bike.databinding.FragmentProfileBinding
+import com.example.bike.datasources.Route
+import com.example.bike.repository.RouteRepository
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
@@ -26,6 +30,8 @@ import com.google.firebase.database.database
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
 import org.jetbrains.annotations.NotNull
+import org.joda.time.LocalDateTime
+import org.joda.time.Period
 import java.io.IOException
 
 // TODO: Rename parameter arguments, choose names that match
@@ -52,6 +58,8 @@ class ProfileFragment : Fragment() {
             signOutClick()
         }
 
+        setListView()
+
         return profileFragmentBinding.root
     }
 
@@ -60,6 +68,51 @@ class ProfileFragment : Fragment() {
         startActivity(intent)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+    }
+
+    // Задать список из пройденных маршрутов
+    private fun setListView() {
+        val arrayList : ArrayList<Route> = arrayListOf()
+
+        Firebase.database.reference.child("routes").orderByChild("userId").equalTo(
+            FirebaseAuth.getInstance().currentUser!!.uid).keepSynced(true)
+
+        Firebase.database.reference.child("routes").orderByChild("userId").equalTo(
+            FirebaseAuth.getInstance().currentUser!!.uid)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val result = snapshot.children!!
+
+                    result.forEach { it ->
+                        val res = it.children!!
+                        val arrayOfData = arrayListOf<String>()
+
+                        res.forEach { date ->
+                            arrayOfData.add(date.value.toString())
+                        }
+
+                        val route = Route(
+                            arrayOfData[0],
+                            arrayOfData[1],
+                            arrayOfData[2],
+                            arrayOfData[3],
+                            arrayOfData[4],
+                            arrayOfData[5],
+                            arrayOfData[6],
+                            arrayOfData[7],
+                            arrayOfData[8],
+                        )
+
+                        arrayList.add(route)
+                    }
+
+                    val adapter = RouteAdapter(requireContext(), arrayList)
+                    profileFragmentBinding.listHistoryItems.adapter = adapter
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                }
+            })
     }
 
     companion object {

@@ -27,20 +27,8 @@ import android.app.Fragment as Fragment1
 
 class MainActivity : AppCompatActivity() {
 
-    //Firebase references
     private var mDatabase: FirebaseDatabase? = null
     private var mAuth: FirebaseAuth? = null
-
-    //UI elements
-    private var firstName: TextView? = null
-    private var lastName: TextView? = null
-    private var email: TextView? = null
-
-    private lateinit var btnMeet: ImageButton;
-    private lateinit var btnSearch: ImageButton;
-    private lateinit var btnStart: ImageButton;
-    private lateinit var btnChat: ImageButton;
-    private lateinit var btnProfile: ImageButton;
 
     private lateinit var binding: ActivityMainBinding
 
@@ -50,7 +38,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate((layoutInflater))
 
         setContentView(binding.root)
-
 
         supportFragmentManager
             .beginTransaction()
@@ -63,6 +50,8 @@ class MainActivity : AppCompatActivity() {
             it.put(R.id.profile, ProfileFragment())
             it.put(R.id.chats, ChatFragment())
             it.put(R.id.gps, LocationFragment())
+            it.put(R.id.search, SearchMeetingFragment())
+            it.put(R.id.bicycle_fr, MeetingFragment())
         }
 
         binding.bottomNav.setOnItemSelectedListener {
@@ -88,12 +77,7 @@ class MainActivity : AppCompatActivity() {
         val mUserReference = databaseReference.child(mUser!!.uid);
 
         val listener = object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-//                firstName!!.text = snapshot.child("firstName").value as String;
-//                lastName!!.text = snapshot.child("secondName").value as String;
-//
-//                mUser.email.also { email!!.text = it };
-            }
+            override fun onDataChange(snapshot: DataSnapshot) {}
 
             override fun onCancelled(error: DatabaseError) {
                 Log.e("MainActivity",
@@ -103,46 +87,8 @@ class MainActivity : AppCompatActivity() {
         mUserReference.addValueEventListener(listener);
     }
 
-    fun initButton() {
-//        btnSearch = findViewById(R.id.search);
-//        btnMeet = findViewById(R.id.meet);
-//        btnStart = findViewById(R.id.start);
-//        btnChat = findViewById(R.id.chat);
-//          btnProfile = findViewById(R.id.bottom_nav);
-//
-//        btnMeet.setOnClickListener { selectColor(it, "#FFFFE500"); }
-//        btnSearch.setOnClickListener { selectColor(it, "#FFFFE500"); }
-//        btnStart.setOnClickListener { selectColor(it, "#FFFFE500"); }
-//        btnChat.setOnClickListener { selectColor(it, "#FFFFE500"); }
-
-//        btnProfile.setOnClickListener {
-//            selectColor(it, "#FFFFE500");
-//
-//            supportFragmentManager
-//                .beginTransaction()
-//                .replace(R.id.fragment_profile, ProfileFragment.newInstance())
-//                .commit();
-//
-//        }
-    }
-
-//    private fun selectColor(btn: View?, color: String) {
-//        clearBackgroundColorButton();
-//
-//        btn!!.setBackgroundColor( Color.parseColor(color));
-//    }
-//
-//    private fun clearBackgroundColorButton() {
-//        btnMeet.setBackgroundColor(Color.parseColor("#003B1D49"))
-//        btnSearch.setBackgroundColor(Color.parseColor("#003B1D49"))
-//        btnStart.setBackgroundColor(Color.parseColor("#003B1D49"))
-//        btnChat.setBackgroundColor(Color.parseColor("#003B1D49"))
-//        btnProfile.setBackgroundColor(Color.parseColor("#003B1D49"))
-//    }
-
     override fun onStart() {
         super.onStart()
-
     }
 
     override fun onResume() {

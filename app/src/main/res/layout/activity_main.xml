@@ -5,7 +5,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#201E28"
+        android:background="#FF201E28"
         tools:context=".ui.MainActivity">
 
     <FrameLayout
@@ -13,20 +13,21 @@
             android:layout_height="680dp"
             android:id="@+id/fragment_profile"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
-    >
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent">
 
     </FrameLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
+            app:itemIconTint="#9DCAF1"
             android:layout_width="match_parent"
             android:layout_height="70dp"
+            app:itemTextColor="#9DCAF1"
             android:id="@+id/bottom_nav"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintStart_toEndOf="parent"
             app:menu="@menu/bottom_navigation_menu"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:background="#FD8AF3F3"
+            android:background="#2E2B3A"
             android:isScrollContainer="false"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

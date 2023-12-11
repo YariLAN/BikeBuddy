@@ -11,17 +11,16 @@
 
     <ImageButton
             android:id="@+id/btn_logOut"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/baseline_logout_24"
+            android:layout_width="41dp"
+            android:layout_height="47dp"
+            android:src="@drawable/sign"
             android:backgroundTint="@android:color/transparent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/image_profile"
-            app:layout_constraintHorizontal_bias="0.955"
-            app:layout_constraintVertical_bias="0.513" android:minHeight="48dp"/>
-
+            app:layout_constraintHorizontal_bias="0.916"
+            android:minHeight="48dp"/>
     <de.hdodenhof.circleimageview.CircleImageView
             android:layout_width="150dp"
             android:layout_height="150dp"
@@ -39,7 +38,7 @@
 
     <TextView
             android:backgroundTint="@android:color/transparent"
-            android:textColor="@color/white"
+            android:textColor="#9DCAF1"
             android:hint="UserName"
             android:layout_width="167dp"
             android:layout_height="30dp" android:id="@+id/username_tv"
@@ -49,7 +48,7 @@
             app:layout_constraintVertical_bias="0.178" android:background="#8FF4E0"/>
     <TextView
             android:backgroundTint="@android:color/transparent"
-            android:textColor="@color/white"
+            android:textColor="#9DCAF1"
             android:hint="Email"
             android:layout_width="184dp"
             android:layout_height="31dp" android:id="@+id/textView4"
@@ -59,7 +58,7 @@
             app:layout_constraintVertical_bias="0.334" android:background="#8FF4E0"/>
     <TextView
             android:backgroundTint="@android:color/transparent"
-            android:textColor="@color/white"
+            android:textColor="#9DCAF1"
             android:hint="SecondName"
             android:layout_width="167dp"
             android:layout_height="30dp" android:id="@+id/textView5"
@@ -67,4 +66,25 @@
             app:layout_constraintBottom_toBottomOf="parent" android:layout_marginEnd="32dp"
             app:layout_constraintEnd_toEndOf="parent" app:layout_constraintHorizontal_bias="0.924"
             app:layout_constraintVertical_bias="0.252" android:background="#8FF4E0"/>
+    <TextView
+            android:text="История активностей"
+            android:textAlignment="center"
+            android:textColor="#9DCAF1"
+            android:textSize="18dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/title_history"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/image_profile"
+            android:layout_marginTop="56dp"/>
+    <ListView
+            android:id="@+id/list_history_items"
+            android:layout_width="347dp"
+            android:layout_height="329dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="1dp"
+            android:background="#FA252330"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,7 +8,8 @@
 
 
     <TextView
-            android:text="TextView"
+            android:text="Пока пусто"
+            android:textColor="#9DCAF1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/textView9"
             app:layout_constraintTop_toTopOf="parent"
