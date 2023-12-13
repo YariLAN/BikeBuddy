@@ -26,7 +26,7 @@ class RouteAdapter(context: Context, private val resource: ArrayList<Route>) :
 
         val date = org.joda.time.LocalDateTime(resource[position].startTime)
 
-        val format = date.toString(DateTimeFormat.forPattern("MM.dd.yyyy HH:mm:ss"))
+        val format = date.toString(DateTimeFormat.forPattern("dd.MM.yyyy HH:mm:ss"))
 
         title.text = "Дата: $format";
         text.text  = "Расстояние: ${resource[position].distance} метров";
