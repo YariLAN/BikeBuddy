@@ -43,17 +43,26 @@ object DistanceTracker {
 }
 
 @Suppress("DEPRECATION")
+
+// Фпагмент для основного взаимодействия с картой
 class LocationFragment: Fragment(), OnMapReadyCallback {
 
+    // биндинг для данного фрагмента
     private lateinit var locBinding: FragmentLocationBinding;
 
+    // получение карты
     private lateinit var map: GoogleMap
+
+    // получение базового фрагмента из библиотеки Map SDK
     private lateinit var mapFragment: SupportMapFragment
+
     private lateinit var client: FusedLocationProviderClient
     private lateinit var locationCallback: LocationCallback
 
+    // переменная для учета последнего местоположения
     private var lastLocation: Location? = null
 
+    // дата и локация начала поездки
     private lateinit var startDateTime: LocalDateTime
     private var startLocation: Location? = null
 

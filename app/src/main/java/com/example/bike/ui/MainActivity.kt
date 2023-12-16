@@ -39,6 +39,7 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(binding.root)
 
+        // настраиваем стартовый фрагмент при загрузке MainActivity
         supportFragmentManager
             .beginTransaction()
             .replace(binding.fragmentProfile.id, ProfileFragment())
@@ -46,6 +47,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.bottomNav.selectedItemId = R.id.profile
 
+        // Настройка подключений (соотносим ключи к фрагментам программы)
         val fragmentMap: Map<Int, Fragment> = HashMap<Int, Fragment>().also {
             it.put(R.id.profile, ProfileFragment())
             it.put(R.id.chats, ChatFragment())
@@ -54,6 +56,7 @@ class MainActivity : AppCompatActivity() {
             it.put(R.id.bicycle_fr, MeetingFragment())
         }
 
+        // Настраиваем навигационное меню в низу программы
         binding.bottomNav.setOnItemSelectedListener {
             val fragment = fragmentMap[it.itemId]
 

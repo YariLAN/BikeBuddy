@@ -21,13 +21,19 @@ class RouteAdapter(context: Context, private val resource: ArrayList<Route>) :
         val inflater : LayoutInflater = this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater;
         val view : View = inflater.inflate(R.layout.item_route, parent, false);
 
+        // Заголовок для элемента списка
         val title: TextView = view.findViewById<TextView?>(R.id.title_date)
+
+        // Основная часть для элемента списка
         val text: TextView = view.findViewById<TextView?>(R.id.text_distance)
 
+        // приведение типа строки в дату
         val date = org.joda.time.LocalDateTime(resource[position].startTime)
 
+        // форматирование даты в вид "dd.MM.yyyy HH:mm:ss"
         val format = date.toString(DateTimeFormat.forPattern("dd.MM.yyyy HH:mm:ss"))
 
+        // запись даты и дистанции к заголовку и части элемента списка
         title.text = "Дата: $format";
         text.text  = "Расстояние: ${resource[position].distance} метров";
 
