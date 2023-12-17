@@ -24,6 +24,6 @@ class MeetingFragment : Fragment() {
     companion object {
         @JvmStatic
         fun newInstance() =
-            ChatFragment().apply { arguments = Bundle().apply {} }
+            MeetingFragment().apply { arguments = Bundle().apply {} }
     }
 }

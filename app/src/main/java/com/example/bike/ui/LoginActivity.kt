@@ -21,7 +21,7 @@ class LoginActivity : AppCompatActivity() {
     // пароль
     private lateinit var pass: EditText
 
-    // диалоговое окошко для отображения ошибок
+    // диалоговое окошко для отображения состояния каки-либо операций
     private lateinit var progressBar: ProgressDialog;
 
     // объект FirebaseAuth - сервиса, для регистрации, авторизации пользователей

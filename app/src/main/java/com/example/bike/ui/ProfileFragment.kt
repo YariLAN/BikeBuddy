@@ -38,31 +38,40 @@ import java.io.IOException
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 class ProfileFragment : Fragment() {
 
+    // использование биндинга
     private lateinit var profileFragmentBinding: FragmentProfileBinding
+
+    // путь к файлу картинки
     private lateinit var filePath: Uri
 
+    // создания фрагмента
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         profileFragmentBinding = FragmentProfileBinding.inflate(inflater, container, false)
 
+        // метод заполнения данными пользователя из базы данных
         loadUserInfo()
 
+        // событие - установка изображения
         profileFragmentBinding.imageProfile.setOnClickListener {
             selectImage()
         }
 
+        // событие - выход из аккаунта
         profileFragmentBinding.btnLogOut.setOnClickListener {
             FirebaseAuth.getInstance().signOut()
             signOutClick()
         }
 
+        // установить историю активностей прошедших поездок
         setListView()
 
         return profileFragmentBinding.root
     }
 
+    // выход из аккаунта
     private fun signOutClick() {
         val intent = Intent(context, LoginActivity::class.java)
         startActivity(intent)
@@ -74,15 +83,19 @@ class ProfileFragment : Fragment() {
     private fun setListView() {
         val arrayList : ArrayList<Route> = arrayListOf()
 
+        // установка асинхронности потока
         Firebase.database.reference.child("routes").orderByChild("userId").equalTo(
             FirebaseAuth.getInstance().currentUser!!.uid).keepSynced(true)
 
+        // выгрузка данных о маршрутах текущего пользователя
         Firebase.database.reference.child("routes").orderByChild("userId").equalTo(
             FirebaseAuth.getInstance().currentUser!!.uid)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val result = snapshot.children!!
 
+                    // перебор данных
+                    // перевод из HashMap в класс Route
                     result.forEach { it ->
                         val res = it.children!!
                         val arrayOfData = arrayListOf<String>()
@@ -106,6 +119,7 @@ class ProfileFragment : Fragment() {
                         arrayList.add(route)
                     }
 
+                    // инициализация адаптера
                     val adapter = RouteAdapter(requireContext(), arrayList)
                     profileFragmentBinding.listHistoryItems.adapter = adapter
                 }
@@ -123,9 +137,11 @@ class ProfileFragment : Fragment() {
             }
     }
 
+    // загрузка персональных данных о пользователе
     private fun loadUserInfo() {
         val db = Firebase.database
 
+        // инициализация прослушивателя ValueEventListener
         val listener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val userName: String = snapshot.child("firstName").value.toString()
@@ -149,15 +165,15 @@ class ProfileFragment : Fragment() {
 
         val mAuth = FirebaseAuth.getInstance();
 
+        // получени пользователя FirebaseUser
         val mUser = mAuth.currentUser;
 
         db.getReference("users").child(mUser!!.uid).addListenerForSingleValueEvent(listener)
     }
 
+    // метод выбора фотографии со стороннего приложения установка его пути
     private var pickImageActivityResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK && result.data != null && result.data!!.data != null) {
-            val date: Intent? = result.data
-
             filePath = result.data!!.data!!
 
             try {
@@ -177,22 +193,31 @@ class ProfileFragment : Fragment() {
         }
     }
 
+    // выбор фотографии
     private fun selectImage() {
         var intent: Intent = Intent()
+
+        // установка формата данных, которые принимает intent
         intent.setType("image/*")
         intent.setAction(Intent.ACTION_GET_CONTENT)
         pickImageActivityResultLauncher.launch(intent)
     }
 
+    // обновление фотографии
     private fun uploadImage() {
         if (filePath != null) {
+            // получение ключа пользователя
             val uid: String = FirebaseAuth.getInstance().currentUser!!.uid
 
+            // сохранение файла для пользователя с uid в FirebaseStorage
             FirebaseStorage.getInstance().reference.child("images/${uid}")
                 .putFile(filePath)
+                // если событие прошло успешно
                 .addOnSuccessListener {
+                    // отображение сообщения на экране
                     Toast.makeText(context, "Photo upload complete", Toast.LENGTH_SHORT).show();
 
+                    // установка данного пути к файлу в поле profileImage в базе данных текущему пользователю
                     FirebaseStorage.getInstance().reference.child("images/${uid}").downloadUrl
                         .addOnSuccessListener {
                             Firebase.database.getReference("users")
@@ -203,6 +228,7 @@ class ProfileFragment : Fragment() {
         }
     }
 
+    // метод удаления фрагмента, вслучае выхода из него
     override fun onDestroy() {
         super.onDestroy()
     }

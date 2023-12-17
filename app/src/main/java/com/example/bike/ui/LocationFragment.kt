@@ -1,15 +1,14 @@
 package com.example.bike.ui
 
+// библиотека с первоначальной конфигурацией приложения
 import android.Manifest
-import android.annotation.SuppressLint
+
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.Toast
 import android.widget.Toast.*
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.bike.BuildConfig
@@ -22,22 +21,12 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.database
-import com.google.maps.model.LatLng
-import com.yandex.mapkit.Animation
-import com.yandex.mapkit.MapKitFactory
-import com.yandex.mapkit.geometry.Point
-import com.yandex.mapkit.map.CameraPosition
-import com.yandex.mapkit.mapview.MapView
-import org.joda.time.DateTime
 import org.joda.time.LocalDateTime
-import org.joda.time.Period
-import java.text.SimpleDateFormat
 import java.util.*
 
 
+// Статический класс с указанием пройденного расстояния
 object DistanceTracker {
     var totalDistance: Long = 0L
 }
@@ -50,13 +39,18 @@ class LocationFragment: Fragment(), OnMapReadyCallback {
     // биндинг для данного фрагмента
     private lateinit var locBinding: FragmentLocationBinding;
 
-    // получение карты
+    // получение карты GoogleMap
     private lateinit var map: GoogleMap
 
     // получение базового фрагмента из библиотеки Map SDK
     private lateinit var mapFragment: SupportMapFragment
 
+    // объект для получения местоположения устройства
     private lateinit var client: FusedLocationProviderClient
+
+    // интерфейс в библиотеке Google Play Services,
+    // используемый для обработки результатов
+    // запросов местоположения устройства
     private lateinit var locationCallback: LocationCallback
 
     // переменная для учета последнего местоположения
@@ -66,11 +60,16 @@ class LocationFragment: Fragment(), OnMapReadyCallback {
     private lateinit var startDateTime: LocalDateTime
     private var startLocation: Location? = null
 
+    // Метод создания фрагмента
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        // получение биндинга
         locBinding = FragmentLocationBinding.inflate(inflater, container, false)
+
+        // получение базового фрагмента для карты
         mapFragment = childFragmentManager.findFragmentById(R.id.google_map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
@@ -101,25 +100,36 @@ class LocationFragment: Fragment(), OnMapReadyCallback {
         return locBinding.root
     }
 
+    // Создание меню для фрагмента
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.types_menu, menu)
     }
 
+    // выбор темы карты из меню
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         map.mapType = when (item.itemId) {
+            // Нормальная
             R.id.normal -> GoogleMap.MAP_TYPE_NORMAL;
+            // Рельеф
             R.id.terrain -> GoogleMap.MAP_TYPE_TERRAIN;
+            // Спутник
             R.id.satelite -> GoogleMap.MAP_TYPE_SATELLITE;
+            // Гибрид (спутник + данные по карте)
             R.id.hybrid -> GoogleMap.MAP_TYPE_HYBRID;
 
+            // карты нет
             else -> GoogleMap.MAP_TYPE_NONE
         }
 
         return super.onOptionsItemSelected(item)
     }
 
+    // уникальный код запроса разрешений на доступ к местоположению
     private val PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1
 
+    // роверяется наличие разрешения на доступ к точному местоположению устройства,
+    // и, если разрешение отсутствует, запрашивается у пользователя данное
+    // разрешение с кодом запроса
     private fun checkPermission(): Boolean {
         return if (ContextCompat.checkSelfPermission(
                 requireContext(),
@@ -136,6 +146,7 @@ class LocationFragment: Fragment(), OnMapReadyCallback {
         }
     }
 
+    // было ли предоставлено разрешение на доступ к точному местоположению
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -150,22 +161,30 @@ class LocationFragment: Fragment(), OnMapReadyCallback {
         }
     }
 
+    // Статический компаньон-объект (companion object) внутри класса
+    // или интерфейса, который содержит фабричный метод
+    // для создания экземпляра фрагмента
     companion object {
         @JvmStatic
         fun newInstance() =
-            ChatFragment().apply { arguments = Bundle().apply {} }
+            LocationFragment().apply { arguments = Bundle().apply {} }
     }
 
+
+    // вызов метода при открытие карты
     override fun onMapReady(map: GoogleMap) {
         this.map = map
 
+        // есть ли разрешение отслеживать геопозицию
         if (checkPermission()) {
             this.map.isMyLocationEnabled = true;
 
+            // установка значения местоположения
             client.lastLocation.addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     val lastLocation = task.result
 
+                    // если точка найдена - сместить камеру карты к точке
                     if (lastLocation != null) {
                         map.moveCamera(CameraUpdateFactory.newLatLngZoom(
                             com.google.android.gms.maps.model.LatLng(
@@ -180,6 +199,8 @@ class LocationFragment: Fragment(), OnMapReadyCallback {
 
     // Отслеживание метки местоположения
     private fun startLocationTracking() {
+
+        // установка точности для отслеживнаия
         val locationRequest = LocationRequest().apply {
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
             interval = 5000
@@ -189,9 +210,11 @@ class LocationFragment: Fragment(), OnMapReadyCallback {
         // инициализируем время начало отслеживания
         startDateTime = LocalDateTime.now()
 
+        // алгоритм обработки обновления координат устройства
         locationCallback = object: LocationCallback() {
             override fun onLocationResult(loc: LocationResult) {
                 loc?.let {
+                    // если точка начальная
                     if(lastLocation == null){
                         lastLocation  = it.lastLocation
                         startLocation = it.lastLocation
@@ -200,12 +223,14 @@ class LocationFragment: Fragment(), OnMapReadyCallback {
 
                     it.lastLocation?.let { its_last ->
 
+                        // вычисление дистанции
                         val distanceInMeters = its_last.distanceTo(lastLocation!!)
                         DistanceTracker.totalDistance += distanceInMeters.toLong()
 
                         val msg = "Completed: ${DistanceTracker.totalDistance} meters"
 
                         if(BuildConfig.DEBUG){
+                            // журналирование пройденного расстояния
                             Log.d("TRACKER", "$msg, (added $distanceInMeters)")
                         }
                         locBinding.locationInfo.text = msg
@@ -216,8 +241,10 @@ class LocationFragment: Fragment(), OnMapReadyCallback {
             }
         }
 
+        // получение клиента - метки устройства
         client = LocationServices.getFusedLocationProviderClient(requireContext())
 
+        // есть разрешение - вызывай обработку обновлений локации
         if (checkPermission()) {
             client.requestLocationUpdates(locationRequest, locationCallback, null)
         }
@@ -225,6 +252,7 @@ class LocationFragment: Fragment(), OnMapReadyCallback {
 
     // запись данных о пройденном маршруте в базу
     private fun postRouteCommand() {
+        // объект класса Маршрут
         val route: Route = Route(
             DistanceTracker.totalDistance.toString(),
             LocalDateTime.now().toString(),
@@ -243,6 +271,7 @@ class LocationFragment: Fragment(), OnMapReadyCallback {
 
     // Остановить отслеживание
     private fun stopLocationTracking() {
+        // Остановка обработки обновления локации
         client.removeLocationUpdates(locationCallback)
 
         // Запись маршрута в базу

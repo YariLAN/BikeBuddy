@@ -10,14 +10,14 @@ import android.widget.TextView
 import com.example.bike.R
 import com.example.bike.datasources.Route
 import org.joda.time.format.DateTimeFormat
-import org.joda.time.format.DateTimeFormatter
-import java.time.LocalDateTime
+
 
 // Класс для оформления элемента списка
 class RouteAdapter(context: Context, private val resource: ArrayList<Route>) :
     ArrayAdapter<Route>(context, R.layout.item_route, resource) {
     @SuppressLint("ViewHolder", "SetTextI18n")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+        // создание экземпляра пользовательского интерфейса из файлов разметки XML в Android
         val inflater : LayoutInflater = this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater;
         val view : View = inflater.inflate(R.layout.item_route, parent, false);
 

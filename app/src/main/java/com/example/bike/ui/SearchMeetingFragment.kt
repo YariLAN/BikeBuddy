@@ -23,6 +23,6 @@ class SearchMeetingFragment : Fragment() {
     companion object {
         @JvmStatic
         fun newInstance() =
-            ChatFragment().apply { arguments = Bundle().apply {} }
+            SearchMeetingFragment().apply { arguments = Bundle().apply {} }
     }
 }
